@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">368</span>
+            <span class="post-count">780</span>
         </span>
     </span>
 
@@ -89,7 +89,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">3 分钟</span>
         </span>
     </span>
 </div>
@@ -104,7 +104,7 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="2ex1"><a href="#2ex1" class="headerlink" title="2ex1"></a>2ex1</h3><p>两个文件</p>
+  <h1 id="2ex1"><a href="#2ex1" class="headerlink" title="2ex1"></a>2ex1</h1><p>两个文件</p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121146870.png" alt="image-20231112111141782"></p>
 <p>out里面应该是密文了</p>
 <p>看起来像是base64的变表加密</p>
@@ -114,7 +114,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121147982.png" alt="image-20231110180924550"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">d = <span class="string">&quot;&quot;</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line">string = <span class="string">&quot;|_r-+_Cl5;vgq_pdme7#7eC0=&quot;</span>			</span><br><span class="line">base64_list = <span class="string">&#x27;@,.1fgvw#`/2ehux$~&quot;3dity%_;4cjsz^+&#123;5bkrA&amp;=&#125;6alqB*-[70mpC()]89noD&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> string:</span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		d += <span class="built_in">str</span>(<span class="built_in">bin</span>(base64_list.index(i))[<span class="number">2</span>:]).rjust(<span class="number">6</span>,<span class="string">&quot;0&quot;</span>)</span><br><span class="line">	<span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(d),<span class="number">8</span>):</span><br><span class="line">	flag += <span class="built_in">chr</span>(<span class="built_in">int</span>(d[i:i+<span class="number">8</span>],<span class="number">2</span>))</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(base64_list))</span><br></pre></td></tr></table></figure>
 
-<h3 id="What-does-this-button-do"><a href="#What-does-this-button-do" class="headerlink" title="What-does-this-button-do"></a>What-does-this-button-do</h3><p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121147708.png" alt="image-20231110181951676">		发现是zip文件</p>
+<h1 id="What-does-this-button-do"><a href="#What-does-this-button-do" class="headerlink" title="What-does-this-button-do"></a>What-does-this-button-do</h1><p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121147708.png" alt="image-20231110181951676">		发现是zip文件</p>
 <p>可以发现是一个apk文件</p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121147239.png" alt="image-20231110182136441"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121147470.png" alt="image-20231110182312167"></p>
@@ -125,9 +125,9 @@
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311121147238.png" alt="image-20231110182726057"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">102</span>, <span class="number">108</span>, <span class="number">97</span>, <span class="number">103</span>, <span class="number">123</span>, <span class="number">119</span>, <span class="number">52</span>, <span class="number">110</span>, <span class="number">110</span>, <span class="number">52</span>, <span class="number">95</span>, <span class="number">106</span>, <span class="number">52</span>, <span class="number">114</span>, <span class="number">95</span>, <span class="number">109</span>, <span class="number">121</span>, <span class="number">95</span>, <span class="number">100</span>, <span class="number">51</span>, <span class="number">120</span>, <span class="number">125</span>]</span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">    flag += <span class="built_in">chr</span>(i)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="csaw2013reversing2"><a href="#csaw2013reversing2" class="headerlink" title="csaw2013reversing2"></a>csaw2013reversing2</h3><p>提示运行就能得到flag，但是运行是乱码</p>
+<h1 id="csaw2013reversing2"><a href="#csaw2013reversing2" class="headerlink" title="csaw2013reversing2"></a>csaw2013reversing2</h1><p>提示运行就能得到flag，但是运行是乱码</p>
 <p>主要函数两个，可以看到生成flag在打印flag后面，这也是直接运行乱码的原因</p>
-<h5 id="法一：IDA静态分析修改指令"><a href="#法一：IDA静态分析修改指令" class="headerlink" title="法一：IDA静态分析修改指令"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_66039322/article/details/132343812">法一：IDA静态分析修改指令</a></h5><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_66039322/article/details/132343812">参考博客</a></p>
+<h2 id="法一：IDA静态分析修改指令"><a href="#法一：IDA静态分析修改指令" class="headerlink" title="法一：IDA静态分析修改指令"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_66039322/article/details/132343812">法一：IDA静态分析修改指令</a></h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_66039322/article/details/132343812">参考博客</a></p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311141856492.png" alt="image-20231113232337156"></p>
 <p>有一个if判断和一个中断函数</p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311141856182.png" alt="image-20231113232359392"></p>
@@ -142,6 +142,27 @@
 <p>注意修改的路径和文件名不要有中文</p>
 <p>修改完成之后，直接运行文件，得到flag</p>
 <p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311141855708.png" alt="image-20231113232940833"></p>
+<h2 id="法二：ollydbg动态调试"><a href="#法二：ollydbg动态调试" class="headerlink" title="法二：ollydbg动态调试"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/Palmer9/article/details/104044944">法二：ollydbg动态调试</a></h2><p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311191307195.png" alt="image-20231119130723611"></p>
+<p>F8单步到弹窗位置，直接下断点，再重新载入。</p>
+<p>然后直接F9到断点位置，F7步入call函数</p>
+<h1 id="first"><a href="#first" class="headerlink" title="first"></a>first</h1><p>代码很长，但是后面的&amp;dword_602220和flag有关，往上找可以找到最早出现和v17有关<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311291710129.png" alt="image-20231129160238183"></p>
+<p>v17则和v10和byte_6020DF[i]异或得到byte_60221F[i]</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311291711092.png" alt="image-20231129160305942"></p>
+<p>其中byte_60221F[i]是一个已知数组</p>
+<p>同时跟踪v10可以发现v10由输入进行异或得到<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311291711304.png" alt="image-20231129165448606"></p>
+<p>所以该循环将原dword_602220这个数组中的数异或v10和一个已知数组，然后将结果存到byte_60221F数组中。</p>
+<p>我们可以发现byte_60221F+1刚刚好就等于dword_602220，所以不难得出这次循环结束的dword_602220（byte_60221F）就是flag了。</p>
+<p>不过在main函数没有看见其他的dword_602220，赋值给v17的dword_602220肯定在某个自定义函数中被偷偷赋值了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311291711818.png" alt="image-20231129170556475"></p>
+<p>在上面可以看见一个pthread_create函数，这是一个创建线程的函数，新建的线程会从它的第三个函数也就是start_routine函数开始运行（具体可见:<a target="_blank" rel="noopener" href="https://blog.csdn.net/mijichui2153/article/details/82855925">pthread_create函数详解</a>）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311291711712.png" alt="image-20231129170853562"></p>
+<p>进入start_routine函数<img src="https://cdn.jsdelivr.net/gh/x1n-yan/myblog@master/img/202311291711584.png" alt="image-20231129171051100"></p>
+<p>可以看见有对dword_602220进行赋值操作，毫无疑问这也是一个重要函数。</p>
+<p>usleep–将线程挂起</p>
+<p>pthread_mutex_lock–线程调用该函数让互斥锁上锁，如果该互斥锁已被另一个线程锁定和拥有，则调用该线程将阻塞，直到该互斥锁变为可用为止。</p>
+<p>pthread_mutex_unlock–解除互斥锁。</p>
+<p>sub_400E10是md5加密函数（大佬的wp说是，感觉应该是动调后发现输入数据被md5加密了？）</p>
+<p>输入数据分为6组，每组4个进行md5计算</p>
  
       <!-- reward -->
       
@@ -217,6 +238,15 @@
    
   <nav class="article-nav">
     
+      <a href="/2024/01/28/re%E5%8F%8D%E8%B0%83%E8%AF%95/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            re反调试的第一次
+          
+        </div>
+      </a>
+    
     
       <a href="/2023/03/15/%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%86%85%E7%BD%91%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
@@ -237,7 +267,7 @@
     <ul>
       <li>
         Copyrights &copy;
-        2023
+        2023-2024
         <i class="ri-heart-fill heart_icon"></i> x1nyan
       </li>
     </ul>
